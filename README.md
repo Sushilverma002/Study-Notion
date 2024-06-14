@@ -1,6 +1,6 @@
 # Study Hub (Backend)
 
-Choice Dekho (backend) is a project, which is related for courses and its platform. 
+Study Hub (backend) is a project, which is related for courses and its platform. 
 
 ## Getting Started
 
