@@ -12,7 +12,7 @@ const SubSectionSchema = new mongoose.Schema(
       type: String,
     },
     videoUrl: {
-      type: string,
+      type: String,
     },
   },
   { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }

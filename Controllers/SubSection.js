@@ -179,4 +179,4 @@ subSectionCntrl.deleteSubSection = async (req, res) => {
     );
   }
 };
-export default subSection;
+export default subSectionCntrl;

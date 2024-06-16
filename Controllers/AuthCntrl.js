@@ -7,6 +7,7 @@ import ProfileModel from "../Models/Profile.js";
 import jwt from "jsonwebtoken";
 import mailSender from "../Utilities/mailer.js";
 import { config } from "dotenv";
+import passwordUpdate from "../Utilities/mailTemplates/passwordUpdate.js";
 config();
 
 const AuthController = Object();
@@ -24,7 +25,7 @@ AuthController.sendOTP = async (req, res) => {
 
     if (IsExists) {
       apiResponseHandler.sendResponse(
-        400,
+        401,
         false,
         "User already exisit, Please try with login!!",
         function (response) {
@@ -39,31 +40,30 @@ AuthController.sendOTP = async (req, res) => {
         specialChars: false,
       });
 
-      //step 4: check otp is UNIQUE
       const result = await OTPModel.findOne({ otp: otpNumber });
+      console.log("Result is Generate OTP Func");
+      console.log("OTP", otpNumber);
+      console.log("Result", result);
 
+      //step 4: check otp is UNIQUE
       while (result) {
         otpNumber = optGenerator.generate(6, {
           upperCaseAlphabets: false,
-          lowerCaseAlphabets: false,
-          specialChars: false,
         });
-        result = await OTPModel.findOne({ otp: otpNumber });
       }
 
       //step 5->storing that otp in db
-      const OTPayload = { email, otpNumber };
-      const otpBody = await OTPModel.create({ OTPayload });
-      console.log(otpBody);
+      const OTPayload = { email, otp: otpNumber };
+      const otpBody = await OTPModel.create(OTPayload);
+      console.log("otp body:", otpBody);
 
-      apiResponseHandler.sendResponse(
-        200,
-        true,
-        "OTP sent successfully",
-        function (response) {
-          res.json(response);
-        }
-      );
+      const results = {
+        message: "OTP sent successfully",
+        otp: otpNumber,
+      };
+      apiResponseHandler.sendResponse(200, true, results, function (response) {
+        res.json(response);
+      });
     }
   } catch (error) {
     console.log("error while genrating the otp", error);
@@ -90,7 +90,6 @@ AuthController.signUp = async (req, res) => {
       password,
       confirmPassword,
       accountType,
-      contactNumbwer,
       otp,
     } = req.body;
 
@@ -102,7 +101,7 @@ AuthController.signUp = async (req, res) => {
       !password ||
       !confirmPassword ||
       !otp ||
-      !contactNumbwer
+      !accountType
     ) {
       apiResponseHandler.sendResponse(403, false, "All fields are required."),
         function (response) {
@@ -121,6 +120,19 @@ AuthController.signUp = async (req, res) => {
         }
       );
     }
+    //step 2 : check wheather user already exisit or not
+    const isExists = await UsersModel.findOne({ email });
+
+    if (isExists) {
+      apiResponseHandler.sendError(
+        400,
+        false,
+        "user already exists.",
+        function (response) {
+          res.json(response);
+        }
+      );
+    }
 
     //** find most recent OTP sotred in the db.
     const recentOtp = await OTPModel.find({ email })
@@ -130,17 +142,18 @@ AuthController.signUp = async (req, res) => {
 
     //**VAILDATE OTP
 
+    //step 3: otp vaildation
     if (recentOtp.length == 0) {
-      apiResponseHandler.sendResponse(
+      apiResponseHandler.sendError(
         400,
         false,
-        "OTP not found",
+        "The OTP is not valid",
         function (response) {
           res.json(response);
         }
       );
-    } else if (otp !== recentOtp.otp) {
-      apiResponseHandler.sendResponse(
+    } else if (otp !== recentOtp[0].otp) {
+      apiResponseHandler.sendError(
         400,
         false,
         "Invalid OTP",
@@ -150,52 +163,31 @@ AuthController.signUp = async (req, res) => {
       );
     }
 
-    //step 2 : check wheather user already exisit or not
-    const isExists = await UsersModel.findOne({ email });
-
-    if (isExists) {
-      apiResponseHandler.sendResponse(
-        400,
-        false,
-        "user already exists.",
-        function (response) {
-          res.json(response);
-        }
-      );
-    }
-    //step 3: otp vaildation
-
     //step 4 : not then hash the password and
-    const hashedPassword = bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const profileData = await ProfileModel.create({
       gender: null,
       dateOfbirth: null,
       about: null,
-      contactNumber: contactNumbwer,
+      contactNumber: null,
     });
-    //step 5 : create an entery into db
-    const dataStoreDb = {
+
+    const userData = await UsersModel.create({
       firstName,
       lastName,
       email,
       password: hashedPassword,
-      accountType,
+      accountType: accountType,
       additionalDeatils: profileData._id,
       image: `https://api.dicebear.com/8.x/initials/svg?seed=${firstName}${lastName}`,
-    };
-
-    const userData = await UsersModel.create({ dataStoreDb });
+    });
     console.log("User data", userData);
-    apiResponseHandler.sendResponse(
-      200,
-      true,
-      "user SignUp successfully.",
-      function (response) {
-        res.json(response);
-      }
-    );
+    apiResponseHandler.sendResponse(200, true, userData, function (response) {
+      res.json(response);
+    });
   } catch (error) {
+    console.log(error);
     apiResponseHandler.sendError(
       500,
       false,
@@ -289,13 +281,14 @@ AuthController.login = async (req, res) => {
 };
 
 // change password
-AuthController.changePassword(async (req, res) => {
+AuthController.changePassword = async (req, res) => {
   try {
+    const userDetails = await UsersModel.findById(req.user.id);
     //step 1 : get data from req ki body -> oldPassword,newpassword,confirmNewpassword.
-    const { email, oldPassword, newPassword, confirmNewPassword } = req.body;
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
 
     //step 2 : validation
-    if (!email || !newPassword || !confirmNewPassword || !oldPassword) {
+    if (!newPassword || !confirmNewPassword || !oldPassword) {
       apiResponseHandler.sendResponse(
         403,
         false,
@@ -315,55 +308,47 @@ AuthController.changePassword(async (req, res) => {
         }
       );
     }
-
-    //user exist or not
-    const user = await UsersModel.findOne({ email });
-    if (!user) {
-      apiResponseHandler.sendResponse(
-        400,
-        false,
-        "user not found.",
-        function (response) {
-          res.json(response);
-        }
-      );
-    }
-
     //we are checking wheather old password matches from the password which is in db
 
     if (await bcrypt.compare(oldPassword, user.password)) {
       const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
       //step 3 : update password in DB
-      const updatedResult = await UsersModel.findOneAndUpdate(
-        { email: email },
-        { password: hashedPassword }
-      );
-      if (updatedResult) {
-        //step 4 : send email passoword updated
+      const updatedResult = await UsersModel.findOneAndUpdate(req.user.id, {
+        password: hashedPassword,
+      });
+
+      //step 4 : send email passoword updated
+      try {
         await mailSender(
-          email,
-          "Password Update",
-          "our password has been updated."
+          updatedResult.email,
+          passwordUpdate(
+            updatedResult.email,
+            `Password updated successfully for ${updatedResult.firstName}${updatedResult.lastName}`
+          )
         );
-        apiResponseHandler.sendResponse(
-          200,
-          true,
-          "password updated successfully",
-          function (response) {
-            res.json(response);
-          }
-        );
-      } else {
-        apiResponseHandler.sendResponse(
-          400,
+        console.log("Email sent successfully:", emailResponse.response);
+      } catch (error) {
+        // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
+        console.error("Error occurred while sending email:", error);
+        apiResponseHandler.sendError(
+          500,
           false,
-          "password not updated, please try again.",
+          "Internal server error, Error occurred while sending email",
           function (response) {
             res.json(response);
           }
         );
       }
+
+      apiResponseHandler.sendResponse(
+        200,
+        true,
+        "password updated successfully",
+        function (response) {
+          res.json(response);
+        }
+      );
     }
     //step 5 : return response
   } catch (error) {
@@ -377,5 +362,5 @@ AuthController.changePassword(async (req, res) => {
       }
     );
   }
-});
+};
 export default AuthController;

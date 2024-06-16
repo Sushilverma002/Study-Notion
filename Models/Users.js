@@ -52,13 +52,11 @@ const UserSchema = new mongoose.Schema(
     },
     additionalDeatils: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Profile",
     },
     courseProgress: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: "CourseProgress",
       },
     ],

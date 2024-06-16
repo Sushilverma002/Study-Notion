@@ -1,6 +1,7 @@
 import apiResponseHandler from "../Utilities/apiResponseHandler.js";
 import profileModel from "../Models/Profile.js";
 import userModel from "../Models/Users.js";
+import uploadImageToCloudinary from "../Utilities/imgUploader.js";
 const profileCntrl = Object();
 
 profileCntrl.updateProfile = async (req, res) => {
@@ -115,10 +116,10 @@ profileCntrl.deleteAccount = async (req, res) => {
     //fetch id
     const id = req.user.id;
     //vaildation wheather id is correct
-    const userDetails = await userModel.findById(id);
+    const userDetails = await userModel.findById({ _id: id });
     if (!userDetails) {
       apiResponseHandler.sendError(
-        400,
+        404,
         false,
         "user not found!!",
         function (response) {
@@ -149,6 +150,87 @@ profileCntrl.deleteAccount = async (req, res) => {
         false,
         "Unable To delete user !",
         (response) => {
+          res.json(response);
+        }
+      );
+    }
+  } catch (error) {
+    console.log("error occured:", error);
+    apiResponseHandler.sendError(
+      500,
+      false,
+      "Internal Server Error: An unexpected error occurred while processing your request.",
+      (response) => {
+        res.json(response);
+      }
+    );
+  }
+};
+
+profileCntrl.updateDisplayPicture = async (req, res) => {
+  try {
+    const displayPicture = req.files.displayPicture;
+    const userId = req.user.id;
+    const image = await uploadImageToCloudinary(
+      displayPicture,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    );
+    console.log(image);
+    const updatedProfile = await userModel.findByIdAndUpdate(
+      { _id: userId },
+      { image: image.secure_url },
+      { new: true }
+    );
+    if (updatedProfile) {
+      apiResponseHandler.sendResponse(
+        200,
+        true,
+        updatedProfile,
+        function (response) {
+          res.json(response);
+        }
+      );
+    }
+  } catch (error) {
+    console.log("error occured:", error);
+    apiResponseHandler.sendError(
+      500,
+      false,
+      "Internal Server Error: An unexpected error occurred while processing your request.",
+      (response) => {
+        res.json(response);
+      }
+    );
+  }
+};
+
+profileCntrl.getEnrolledCourses = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userDetails = await userModel
+      .findOne({
+        _id: userId,
+      })
+      .populate("courses")
+      .exec();
+
+    if (!userDetails) {
+      apiResponseHandler.sendError(
+        400,
+        false,
+        `Could not find user with id:${userDetails}`,
+        function (response) {
+          res.json(response);
+        }
+      );
+    } else {
+      apiResponseHandler.sendResponse(
+        200,
+        true,
+        userDetails,
+        function (response) {
           res.json(response);
         }
       );

@@ -17,13 +17,14 @@ import {
 const router = Router();
 
 //============== auth Routes ========
-router.post("/sendOTP", AuthController.sendOTP);
-router.post("/signUp", AuthController.signUp);
 router.post("/login", AuthController.login);
-router.put("/changePassword", AuthController.changePassword);
+router.post("/signUp", AuthController.signUp);
+router.post("/sendotp", AuthController.sendOTP);
+router.put("/changePassword", Auth, AuthController.changePassword);
 
 //================= reset pass Routes ========
-router.put("/resetPass", resetPassCntrl.resetPass);
+router.post("/reset-Password", resetPassCntrl.resetPassword);
+router.post("/reset-Pass-Token", resetPassCntrl.resetPassToken);
 
 // ================ tags Routes ====================
 router.post(
@@ -39,64 +40,16 @@ router.get(
   categoryCntrl.getAllCategory
 );
 
-// ================ section Routes ====================
-router.post(
-  "/createSection",
-  Auth,
-  onlyAcessTOAdmin,
-  sectionCntrl.createSection
-);
-router.put(
-  "/updateSection",
-  Auth,
-  onlyAcessTOAdmin,
-  sectionCntrl.updateSection
-);
-router.put(
-  "/deleteSection/:id",
-  Auth,
-  onlyAcessTOAdmin,
-  sectionCntrl.updateSection
-);
-
-// ================ Subsection Routes ====================
-router.post(
-  "/createSubSection",
-  Auth,
-  onlyAcessTOAdmin,
-  subSectionCntrl.createSubSection
-);
-router.put(
-  "/updateSubSection",
-  Auth,
-  onlyAcessTOAdmin,
-  subSectionCntrl.updateSection
-);
-router.put(
-  "/deleteSubSection/:id",
-  Auth,
-  onlyAcessTOAdmin,
-  subSectionCntrl.updateSection
-);
 // ================ profile Routes ====================
-router.post(
-  "/getAllUserDetails",
-  Auth,
-  onlyAcessTOAdmin,
-  profileCntrl.createProfile
-);
-router.post(
-  "/deleteAccount",
-  Auth,
-  onlyAcessTOAdmin,
-  profileCntrl.createProfile
-);
-router.post(
-  "/updateProfile",
-  Auth,
-  onlyAcessTOAdmin,
-  profileCntrl.createProfile
-);
+// Delete User Account
+router.get("/getAllUserDetails", Auth, profileCntrl.getAllUserDetails);
+router.delete("/deleteAccount", Auth, profileCntrl.deleteAccount);
+router.put("/updateProfile", Auth, profileCntrl.updateProfile);
+
+// Get Enrolled Courses
+router.get("/getEnrolledCourses", Auth, profileCntrl.getEnrolledCourses);
+router.put("/updateDisplayPicture", Auth, profileCntrl.updateDisplayPicture);
+
 // ================ Course Routes ====================
 router.post(
   "/createCourse",
@@ -104,29 +57,67 @@ router.post(
   onlyAcessTOInstructor,
   courseCntrl.createCourse
 );
-router.get(
-  "/getAllCourse",
+router.get("/getAllCourse", courseCntrl.getAllCourse);
+router.get("/getCourseDetail", courseCntrl.getCourseDetail);
+
+// ================ section Routes ====================
+router.post(
+  "/createSection",
   Auth,
   onlyAcessTOInstructor,
-  courseCntrl.getAllCourse
+  sectionCntrl.createSection
 );
-router.get(
-  "/getCourseDetail",
+router.put(
+  "/updateSection",
   Auth,
   onlyAcessTOInstructor,
-  courseCntrl.getCourseDetail
+  sectionCntrl.updateSection
 );
+router.put(
+  "/deleteSection/:id",
+  Auth,
+  onlyAcessTOInstructor,
+  sectionCntrl.updateSection
+);
+
+// ================ Subsection Routes ====================
+router.post(
+  "/createSubSection",
+  Auth,
+  onlyAcessTOInstructor,
+  subSectionCntrl.createSubSection
+);
+router.post(
+  "/updateSubSection",
+  Auth,
+  onlyAcessTOInstructor,
+  subSectionCntrl.updateSubSection
+);
+router.post(
+  "/deleteSubSection/:id",
+  Auth,
+  onlyAcessTOInstructor,
+  subSectionCntrl.deleteSubSection
+);
+
 // ================ Ratind and Review Routes ====================
 
-router.post("/createRating", Auth, ratingAndReviewsCntrl.createRating);
-router.get("/getAvgRating", Auth, ratingAndReviewsCntrl.getAverageRating);
-router.get("/getAllRating", Auth, ratingAndReviewsCntrl.getAllRating);
+router.post(
+  "/createRating",
+  Auth,
+  onlyAcessTOStudent,
+  ratingAndReviewsCntrl.createRating
+);
+router.get("/getAvgRating", ratingAndReviewsCntrl.getAvgRating);
+router.get("/getAllRating", ratingAndReviewsCntrl.getAllRating);
+
 // ================ payement Routes ====================
 router.post(
-  "/caputrePayment  ",
+  "/caputrePayment",
   Auth,
   onlyAcessTOStudent,
   paymentCntrl.caputrePayment
 );
 router.post("/verifySignature", paymentCntrl.verifySignature);
+
 export default router;

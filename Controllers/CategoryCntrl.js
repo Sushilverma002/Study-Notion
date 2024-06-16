@@ -127,4 +127,4 @@ categoryCntrl.categoryPageDeatils = async (req, res) => {
   }
 };
 
-export default tagCntrl;
+export default categoryCntrl;
