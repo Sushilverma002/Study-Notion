@@ -61,15 +61,6 @@ const onlyAcessTOAdmin = (req, res, next) => {
           res.json(response);
         }
       );
-    } else {
-      apiResponseHandler.sendResponse(
-        200,
-        true,
-        "Wlecome to Protected route for ADMIN only.",
-        function (response) {
-          res.json(response);
-        }
-      );
     }
     return next();
   } catch (error) {
@@ -96,15 +87,6 @@ const onlyAcessTOStudent = (req, res, next) => {
           res.json(response);
         }
       );
-    } else {
-      apiResponseHandler.sendResponse(
-        200,
-        true,
-        "Wlecome to Protected route for STUDENT only.",
-        function (response) {
-          res.json(response);
-        }
-      );
     }
     return next();
   } catch (error) {
@@ -127,15 +109,6 @@ const onlyAcessTOInstructor = (req, res, next) => {
         400,
         false,
         "Access Denied,this is Protected route for INSTRUCTOR only.",
-        function (response) {
-          res.json(response);
-        }
-      );
-    } else {
-      apiResponseHandler.sendResponse(
-        200,
-        true,
-        "Wlecome to Protected route for INSTRUCTOR only.",
         function (response) {
           res.json(response);
         }

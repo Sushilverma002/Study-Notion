@@ -2,6 +2,8 @@ import apiResponseHandler from "../Utilities/apiResponseHandler.js";
 import profileModel from "../Models/Profile.js";
 import userModel from "../Models/Users.js";
 import uploadImageToCloudinary from "../Utilities/imgUploader.js";
+import { config } from "dotenv";
+config();
 const profileCntrl = Object();
 
 profileCntrl.updateProfile = async (req, res) => {
@@ -11,7 +13,7 @@ profileCntrl.updateProfile = async (req, res) => {
     //user id get
     const id = req.user.id;
     //vaildation
-    if (!gender || !contactNumber || !id) {
+    if (!contactNumber || !id) {
       apiResponseHandler.sendError(
         400,
         false,
@@ -39,14 +41,14 @@ profileCntrl.updateProfile = async (req, res) => {
       apiResponseHandler.sendResponse(
         200,
         true,
-        "profile updated successfully",
+        updateProfileData,
         function (response) {
           res.json(response);
         }
       );
     } else {
       // Sending 422 Status Code
-      apiResponseHandler.sendError(
+      return apiResponseHandler.sendError(
         422,
         false,
         "Unable To update profile!",
@@ -74,7 +76,7 @@ profileCntrl.getAllUserDetails = async (req, res) => {
     const id = req.user.id;
     // find profile data
     const userDetails = await userModel
-      .find(id)
+      .find({ _id: id })
       .populate("additionalDeatils")
       .exec();
 
@@ -82,7 +84,7 @@ profileCntrl.getAllUserDetails = async (req, res) => {
       apiResponseHandler.sendResponse(
         200,
         true,
-        "profile data fetched successfully",
+        userDetails,
         function (response) {
           res.json(response);
         }
@@ -104,7 +106,7 @@ profileCntrl.getAllUserDetails = async (req, res) => {
       500,
       false,
       "Internal Server Error: An unexpected error occurred while processing your request.",
-      (response) => {
+      function (response) {
         res.json(response);
       }
     );
@@ -184,7 +186,7 @@ profileCntrl.updateDisplayPicture = async (req, res) => {
       { new: true }
     );
     if (updatedProfile) {
-      apiResponseHandler.sendResponse(
+      return apiResponseHandler.sendResponse(
         200,
         true,
         updatedProfile,

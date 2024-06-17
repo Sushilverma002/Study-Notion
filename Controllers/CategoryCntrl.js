@@ -8,12 +8,12 @@ categoryCntrl.createCategory = async (req, res) => {
     const { name, description } = req.body;
 
     if (!name || !description) {
-      apiResponseHandler.sendResponse(
+      apiResponseHandler.sendError(
         400,
         false,
         "all fields are required.",
         function (response) {
-          res.json(response);
+          return res.json(response);
         }
       );
     }
@@ -22,20 +22,20 @@ categoryCntrl.createCategory = async (req, res) => {
       name: name,
       description: description,
     });
-
-    console.log("Category details", tagDetails);
-
-    apiResponseHandler.sendResponse(
-      200,
-      true,
-      "New tag is created.",
-      function (response) {
-        res.json(response);
-      }
-    );
+    console.log("category details", tagDetails);
+    if (tagDetails) {
+      apiResponseHandler.sendResponse(
+        200,
+        true,
+        "new category added",
+        function (response) {
+          return res.json(response);
+        }
+      );
+    }
   } catch (error) {
     console.log("some error occured", error);
-    apiResponseHandler.sendResponse(
+    return apiResponseHandler.sendResponse(
       500,
       false,
       "Something went wrong, internal sever error.",
@@ -52,16 +52,16 @@ categoryCntrl.getAllCategory = async (req, res) => {
       {},
       { name: true, description: true }
     );
-
-    apiResponseHandler.sendResponse(
-      200,
-      true,
-      "all Category returned successfully.",
-      function (response) {
-        response = getTagDetails;
-        res.json(response);
-      }
-    );
+    if (getTagDetails) {
+      apiResponseHandler.sendResponse(
+        200,
+        true,
+        getTagDetails,
+        function (response) {
+          res.json(response);
+        }
+      );
+    }
   } catch (error) {
     console.log("some error occured", error);
     apiResponseHandler.sendResponse(

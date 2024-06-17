@@ -12,7 +12,7 @@ const saltRounds = 15;
 resetPassCntrl.resetPassToken = async (req, res) => {
   try {
     //step 1 : get an email from req
-    const email = req.body;
+    const { email } = req.body;
     //step 2 : check wheather user is vaild or not
     const user = await UsersModel.findOne({ email: email });
 
@@ -20,7 +20,7 @@ resetPassCntrl.resetPassToken = async (req, res) => {
       apiResponseHandler.sendResponse(
         401,
         false,
-        "user not exist.",
+        `This Email: ${email} is not Registered With Us Enter a Valid Email `,
         function (response) {
           res.json(response);
         }
@@ -36,13 +36,15 @@ resetPassCntrl.resetPassToken = async (req, res) => {
       { token: token, resetPasswordExpire: Date.now() + 5 * 60 * 1000 },
       { new: true }
     );
+
+    console.log("updated-details", updatedDeatils);
     //step 5 : create url
     const url = `https://localhost:3000/update-password/${token}`;
     //step 6 : send mail contating url
     await mailSender(
       email,
       "Password Reset Link",
-      `Password Reset Link : ${url}`
+      `Your Link for email verification is ${url}. Please click this url to reset your password.`
     );
     //step 7 : return response
     apiResponseHandler.sendResponse(
@@ -121,7 +123,7 @@ resetPassCntrl.resetPassword = async (req, res) => {
     apiResponseHandler.sendResponse(
       200,
       true,
-      "Password reset successfully.",
+      "reset password successfully.",
       function (response) {
         res.json(response);
       }

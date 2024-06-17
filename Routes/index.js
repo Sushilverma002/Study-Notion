@@ -23,10 +23,10 @@ router.post("/sendotp", AuthController.sendOTP);
 router.put("/changePassword", Auth, AuthController.changePassword);
 
 //================= reset pass Routes ========
-router.post("/reset-Password", resetPassCntrl.resetPassword);
 router.post("/reset-Pass-Token", resetPassCntrl.resetPassToken);
+router.post("/reset-Password", resetPassCntrl.resetPassword);
 
-// ================ tags Routes ====================
+// ================ categories Routes ====================
 router.post(
   "/createCategory",
   Auth,

@@ -103,15 +103,17 @@ AuthController.signUp = async (req, res) => {
       !otp ||
       !accountType
     ) {
-      apiResponseHandler.sendResponse(403, false, "All fields are required."),
+      return (
+        apiResponseHandler.sendResponse(403, false, "All fields are required."),
         function (response) {
           res.json(response);
-        };
+        }
+      );
     }
 
     //* check wheather the password and confirm passwords are same
     if (password !== confirmPassword) {
-      apiResponseHandler.sendResponse(
+      return apiResponseHandler.sendResponse(
         400,
         false,
         "Password and ConfirmPassword not matched, Please try again",
@@ -124,7 +126,7 @@ AuthController.signUp = async (req, res) => {
     const isExists = await UsersModel.findOne({ email });
 
     if (isExists) {
-      apiResponseHandler.sendError(
+      return apiResponseHandler.sendError(
         400,
         false,
         "user already exists.",
@@ -144,7 +146,7 @@ AuthController.signUp = async (req, res) => {
 
     //step 3: otp vaildation
     if (recentOtp.length == 0) {
-      apiResponseHandler.sendError(
+      return apiResponseHandler.sendError(
         400,
         false,
         "The OTP is not valid",
@@ -153,7 +155,7 @@ AuthController.signUp = async (req, res) => {
         }
       );
     } else if (otp !== recentOtp[0].otp) {
-      apiResponseHandler.sendError(
+      return apiResponseHandler.sendError(
         400,
         false,
         "Invalid OTP",
@@ -183,9 +185,14 @@ AuthController.signUp = async (req, res) => {
       image: `https://api.dicebear.com/8.x/initials/svg?seed=${firstName}${lastName}`,
     });
     console.log("User data", userData);
-    apiResponseHandler.sendResponse(200, true, userData, function (response) {
-      res.json(response);
-    });
+    return apiResponseHandler.sendResponse(
+      200,
+      true,
+      userData,
+      function (response) {
+        res.json(response);
+      }
+    );
   } catch (error) {
     console.log(error);
     apiResponseHandler.sendError(
@@ -235,7 +242,7 @@ AuthController.login = async (req, res) => {
       const payload = {
         id: user._id,
         email: user.email,
-        role: user.accountType,
+        accountType: user.accountType,
       };
       //step 4 : jwt token creation
       const token = jwt.sign(payload, process.env.SECRET_KEY, {
@@ -248,17 +255,19 @@ AuthController.login = async (req, res) => {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
       };
-      apiResponseHandler.sendResponse(
-        200,
-        true,
-        "user Login successfully.",
-        function (response) {
-          res.cookie("token", token, options);
-          res.json(response);
-        }
-      );
+
+      const result = {
+        message: "user Login successfully.",
+        token: token,
+        user: user,
+      };
+
+      apiResponseHandler.sendResponse(200, true, result, function (response) {
+        res.cookie("token", token, options);
+        res.json(response);
+      });
     } else {
-      apiResponseHandler.sendResponse(
+      return apiResponseHandler.sendResponse(
         400,
         false,
         "password is incorrect.",
@@ -268,7 +277,7 @@ AuthController.login = async (req, res) => {
       );
     }
   } catch (error) {
-    console.log("erroe while login", error);
+    console.log("error while login", error);
     apiResponseHandler.sendError(
       500,
       false,
