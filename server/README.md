@@ -1,6 +1,6 @@
-# Study Hub (Backend)
+# Study Notion (Backend)
 
-Study Hub (backend) is a project, which is related for courses and its platform. 
+Study Notion (backend) is a project, which is related for courses and its platform. 
 
 ## Getting Started
 
