@@ -58,7 +58,7 @@ router.post(
   courseCntrl.createCourse
 );
 router.get("/getAllCourse", courseCntrl.getAllCourse);
-router.get("/getCourseDetail", courseCntrl.getCourseDetail);
+router.post("/getCourseDetail", courseCntrl.getCourseDetail);
 
 // ================ section Routes ====================
 router.post(

@@ -292,7 +292,7 @@ AuthController.login = async (req, res) => {
 // change password
 AuthController.changePassword = async (req, res) => {
   try {
-    const userDetails = await UsersModel.findById(req.user.id);
+    // const userDetails = await UsersModel.findById(req.user.id);
     //step 1 : get data from req ki body -> oldPassword,newpassword,confirmNewpassword.
     const { oldPassword, newPassword, confirmNewPassword } = req.body;
 

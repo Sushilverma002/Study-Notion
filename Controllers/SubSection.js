@@ -11,7 +11,7 @@ subSectionCntrl.createSubSection = async (req, res) => {
     //fetch dat from req body
     const { title, timeDuration, description, sectionId } = req.body;
     // exact video/file url
-    const video = req.files.VideoFile;
+    const video = req.files.videoFile;
     //vaildation
     if (!sectionId || !title || !timeDuration || !description || !video) {
       apiResponseHandler.sendError(
@@ -26,7 +26,7 @@ subSectionCntrl.createSubSection = async (req, res) => {
     // upload video to the cloudinary
     const uploadDeatils = uploadImageToCloudinary(
       video,
-      process.env.FOLDERNAME
+      process.env.FOLDER_NAME
     );
     // create a subsectoin
     const subSectionDetails = await subSectionModel.create({
@@ -45,12 +45,14 @@ subSectionCntrl.createSubSection = async (req, res) => {
 
     // response retrun.
     if (updateSection) {
-      200,
+      apiResponseHandler.sendResponse(
+        200,
         true,
-        "Sub Section created successfully",
+        updateSection,
         function (response) {
           res.json(response);
-        };
+        }
+      );
     } else {
       // Sending 422 Status Code
       apiResponseHandler.sendError(

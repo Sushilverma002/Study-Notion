@@ -6,7 +6,7 @@ const sectionCntrl = Object();
 sectionCntrl.createSection = async (req, res) => {
   try {
     //fetch data
-    const { sectionName, courseId } = req.Object;
+    const { sectionName, courseId } = req.body;
 
     //check vaildation
     if (!sectionName || !courseId) {
@@ -34,7 +34,7 @@ sectionCntrl.createSection = async (req, res) => {
       apiResponseHandler.sendResponse(
         200,
         true,
-        updateCourseDetails,
+        newSection,
         function (response) {
           res.json(response);
         }

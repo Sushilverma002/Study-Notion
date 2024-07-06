@@ -84,7 +84,7 @@ courseCntrl.createCourse = async (req, res) => {
       instructor: instructorDeatils._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
-      tag,
+      tag: tag,
       category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
     });
@@ -96,22 +96,21 @@ courseCntrl.createCourse = async (req, res) => {
       { new: true }
     );
 
-    // add course entry in tag
-    await categoryModel.create(
-      { courseName },
-      { courseDescription },
-      { $push: { course: newCourse._id } },
+    // add course entry in category
+    await categoryModel.findByIdAndUpdate(
+      { _id: category },
+      {
+        $push: {
+          course: newCourse._id,
+        },
+      },
       { new: true }
     );
+
     // response
-    apiResponseHandler.sendResponse(
-      200,
-      true,
-      "Course Created Successfully",
-      function (response) {
-        res.json(response);
-      }
-    );
+    apiResponseHandler.sendResponse(200, true, newCourse, function (response) {
+      res.json(response);
+    });
   } catch (error) {
     console.log("error occur:", error);
     apiResponseHandler.sendError(
@@ -179,7 +178,7 @@ courseCntrl.getCourseDetail = async (req, res) => {
         },
       })
       .populate("category")
-      .populate("ratratingAndReviewsingAns")
+      // .populate("RatingAndReview")
       .populate({
         path: "courseContent",
         populate: {
