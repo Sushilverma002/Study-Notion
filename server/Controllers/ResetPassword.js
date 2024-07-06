@@ -1,5 +1,4 @@
 import UsersModel from "../Models/Users.js";
-import jwt from "jsonwebtoken";
 import mailSender from "../Utilities/mailer.js";
 import apiResponseHandler from "../Utilities/apiResponseHandler.js";
 import bcrypt from "bcrypt";
