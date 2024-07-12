@@ -8,6 +8,9 @@ import Contentimg from "../components/core/HomePage/Contentimg";
 import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection";
 import TimelineSection from "../components/core/HomePage/TimelineSection";
 import SectionThreeHP from "../components/core/HomePage/SectionThreeHP";
+import ReviewSlider from "../components/core/HomePage/ReviewSlider";
+import ExploreMore from "../components/core/HomePage/ExploreMore";
+
 const Home = () => {
   return (
     <div>
@@ -103,6 +106,8 @@ const Home = () => {
             codeColor={"text-yellow-25"}
           />
         </div>
+
+        <ExploreMore />
       </div>
       {/*section 2*/}
       <div className="bg-pure-greys-5 text-richblack-700 ">
@@ -154,6 +159,7 @@ const Home = () => {
         <h2 className="text-center text-4xl font-semibold mt-10">
           Reviews from the learners
         </h2>
+        <ReviewSlider />
       </div>
       {/*footer*/}
     </div>
