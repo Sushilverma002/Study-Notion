@@ -10,14 +10,15 @@ import TimelineSection from "../components/core/HomePage/TimelineSection";
 import SectionThreeHP from "../components/core/HomePage/SectionThreeHP";
 import ReviewSlider from "../components/core/HomePage/ReviewSlider";
 import ExploreMore from "../components/core/HomePage/ExploreMore";
+import Footer from "../components/common/Footer";
 
 const Home = () => {
   return (
     <div>
       {/*section 1*/}
-      <div className="group realtive mx-auto flex flex-col w-11/12 items-center text-white justify-between max-w-maxContent">
+      <div className=" realtive mx-auto flex flex-col w-11/12 items-center text-white justify-between max-w-maxContent">
         <Link to={"/signup"}>
-          <div className="mt-16 p-1 mx-auto rounded-full bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit shadow-inner-custom">
+          <div className="group mt-16 p-1 mx-auto rounded-full bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit shadow-inner-custom">
             <div className="flex flex-row items-center gap-2 rounded-full px-10 py-[5px] transition-all duration-200 group-hover:bg-richblack-900">
               <p>Become an Instructor</p>
               <FaArrowRight />
@@ -162,6 +163,7 @@ const Home = () => {
         <ReviewSlider />
       </div>
       {/*footer*/}
+      <Footer />
     </div>
   );
 };
