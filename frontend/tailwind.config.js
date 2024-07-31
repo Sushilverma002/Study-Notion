@@ -127,7 +127,15 @@ module.exports = {
     extend: {
       maxWidth: {
         maxContent: "1260px",
-        maxContentTab: "650px"
+        maxContentTab: "650px",
+      },
+      boxShadow: {
+        "inner-custom": "0px -1px 0px 0px #FFFFFF2E inset;",
+        "home-box": "20px 20px 0px 0px #F5F5F5;",
+      },
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(118.19deg, #1FA2FF -3.62%, #12D8FA 50.44%, #A6FFCB 104.51%)",
       },
     },
   },
