@@ -41,7 +41,7 @@ const Footer = () => {
                   );
                 })}
               </div>
-              <div className="flex flex-row gap-2 text-lg">
+              <div className="flex flex-row gap-2 text-lg cursor-pointer">
                 <FaFacebook />
                 <FaGoogle />
                 <FaTwitter />
