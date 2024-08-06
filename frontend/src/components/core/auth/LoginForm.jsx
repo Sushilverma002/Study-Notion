@@ -1,14 +1,32 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [FormData, setFormData] = useState({
     email: "",
     password: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
 
   const { email, password } = FormData;
+
+  const handleOnChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(email, password, navigate));
+  };
+
   return (
     <form
       onClick={handleOnSubmit}
@@ -58,7 +76,18 @@ const LoginForm = () => {
             <AiOutlineEye fontSize={24} fill="#AFB2BF" />
           )}
         </span>
+        <Link to="/forgot-password">
+          <p className="mt-1 ml-auto max-w-max text-xs text-blue-200">
+            Forget Password
+          </p>
+        </Link>
       </label>
+      <button
+        type="submit"
+        className="mt-6 rounded-[8px] bg-yellow-50 py-[-8px] px-[12px] font-medium text-richblack-900"
+      >
+        Sign In
+      </button>
     </form>
   );
 };
