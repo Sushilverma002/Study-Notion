@@ -4,12 +4,30 @@ import Home from "./pages/Home.jsx";
 import Navbar from "./components/common/Navbar.jsx";
 import ForgetPassword from "./pages/ForgetPassword.jsx";
 import OpenRoute from "./components/core/auth/OpenRoute.jsx";
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
 function App() {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route
+          path="signup"
+          element={
+            <OpenRoute>
+              <Signup />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <OpenRoute>
+              <Login />
+            </OpenRoute>
+          }
+        />
         <Route
           path="forgot-password"
           element={

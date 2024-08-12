@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { sendotp } from "../../../appRedux/services/operations/authAPI";
 import { Account_Type } from "../../../utils/constant";
 import { setSignupData } from "../../../appRedux/slices/auth";
-
+import Tab from "../../common/Tab";
 const SignupForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -86,7 +86,7 @@ const SignupForm = () => {
         <div className="flex gap-x-4">
           <label>
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              first Name <sup className="text-pink-200">*</sup>
+              First Name <sup className="text-pink-200">*</sup>
             </p>
             <input
               required
@@ -103,7 +103,7 @@ const SignupForm = () => {
           </label>
           <label>
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              last Name<sub className="text-pink-200">*</sub>
+              Last Name<sup className="text-pink-200">*</sup>
             </p>
             <input
               required
@@ -121,7 +121,7 @@ const SignupForm = () => {
         </div>
         <label>
           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-            Email Address<sub className="text-pink-200">*</sub>
+            Email Address<sup className="text-pink-200">*</sup>
           </p>
           <input
             required
@@ -136,26 +136,27 @@ const SignupForm = () => {
             className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
           />
         </label>
+
         <div className="flex gap-x-4">
           <label className="relative">
-            <p className="mb-1 text-[0.875px] leading-[1.375rem] text-richblack-5">
-              Create Password<sub className="text-pink-5">*</sub>
+            <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              Create Password <sup className="text-pink-200">*</sup>
             </p>
             <input
               required
               type={showPassword ? "text" : "password"}
-              name="Password"
+              name="password"
               value={password}
               onChange={handleOnChange}
               placeholder="Enter Password"
               style={{
                 boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
               }}
-              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-5"
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absoulte right-3 top-[38px] z-[10] cursor-pointer"
+              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
               {showPassword ? (
                 <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -165,8 +166,8 @@ const SignupForm = () => {
             </span>
           </label>
           <label className="relative">
-            <p className="mb-1 text-[0.875px] leading-[1.375rem] text-richblack-5">
-              Confirm Password<sub className="text-pink-5">*</sub>
+            <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+              Confirm Password <sup className="text-pink-200">*</sup>
             </p>
             <input
               required
@@ -178,13 +179,13 @@ const SignupForm = () => {
               style={{
                 boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
               }}
-              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
+              className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] pr-10 text-richblack-5"
             />
             <span
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absoulte right-3 top-[38px] z-[10] cursor-pointer"
+              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
-              {showPassword ? (
+              {showConfirmPassword ? (
                 <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
               ) : (
                 <AiOutlineEye fontSize={24} fill="#AFB2BF" />

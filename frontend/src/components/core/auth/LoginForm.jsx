@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import { login } from "../../../appRedux/services/operations/authAPI";
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const LoginForm = () => {
 
   return (
     <form
-      onClick={handleOnSubmit}
+      onSubmit={handleOnSubmit}
       className="mt-6 flex w-full flex-col gap-y-4"
     >
       <label>
@@ -37,12 +37,12 @@ const LoginForm = () => {
           Email Address<sup className="text-pink-200">*</sup>
         </p>
         <input
+          required
           type="email"
           name="email"
-          placeholder="Enter your email address"
           value={email}
           onChange={handleOnChange}
-          required
+          placeholder="Enter your email address"
           style={{
             boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
           }}
@@ -54,12 +54,12 @@ const LoginForm = () => {
           password<sup className="text-pink-200">*</sup>
         </p>
         <input
+          required
           type="password"
           name="password"
-          placeholder="Enter your password"
           value={password}
           onChange={handleOnChange}
-          required
+          placeholder="Enter your password"
           style={{
             boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
           }}
@@ -84,7 +84,7 @@ const LoginForm = () => {
       </label>
       <button
         type="submit"
-        className="mt-6 rounded-[8px] bg-yellow-50 py-[-8px] px-[12px] font-medium text-richblack-900"
+        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
       >
         Sign In
       </button>
