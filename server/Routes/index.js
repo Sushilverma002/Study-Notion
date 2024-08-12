@@ -18,13 +18,13 @@ const router = Router();
 
 //============== auth Routes ========
 router.post("/login", AuthController.login);
-router.post("/signUp", AuthController.signUp);
+router.post("/signup", AuthController.signUp);
 router.post("/sendotp", AuthController.sendOTP);
 router.put("/changePassword", Auth, AuthController.changePassword);
 
 //================= reset pass Routes ========
-router.post("/reset-Pass-Token", resetPassCntrl.resetPassToken);
-router.post("/reset-Password", resetPassCntrl.resetPassword);
+router.post("/reset-password-token", resetPassCntrl.resetPassToken);
+router.post("/reset-password", resetPassCntrl.resetPassword);
 
 // ================ categories Routes ====================
 router.post(
@@ -34,7 +34,7 @@ router.post(
   categoryCntrl.createCategory
 );
 router.get(
-  "/getAllCategory",
+  "/getAllCategories",
   Auth,
   onlyAcessTOAdmin,
   categoryCntrl.getAllCategory
@@ -42,8 +42,8 @@ router.get(
 
 // ================ profile Routes ====================
 // Delete User Account
-router.get("/getAllUserDetails", Auth, profileCntrl.getAllUserDetails);
-router.delete("/deleteAccount", Auth, profileCntrl.deleteAccount);
+router.get("/getUserDetails", Auth, profileCntrl.getAllUserDetails);
+router.delete("/deleteProfile", Auth, profileCntrl.deleteAccount);
 router.put("/updateProfile", Auth, profileCntrl.updateProfile);
 
 // Get Enrolled Courses
@@ -109,7 +109,7 @@ router.post(
   ratingAndReviewsCntrl.createRating
 );
 router.get("/getAvgRating", ratingAndReviewsCntrl.getAvgRating);
-router.get("/getAllRating", ratingAndReviewsCntrl.getAllRating);
+router.get("/getReviews", ratingAndReviewsCntrl.getAllRating);
 
 // ================ payement Routes ====================
 router.post(
@@ -118,6 +118,6 @@ router.post(
   onlyAcessTOStudent,
   paymentCntrl.caputrePayment
 );
-router.post("/verifySignature", paymentCntrl.verifySignature);
+router.post("/verifyPayment", paymentCntrl.verifySignature);
 
 export default router;
