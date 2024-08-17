@@ -1,7 +1,8 @@
 import apiResponseHandler from "../Utilities/apiResponseHandler.js";
 import mailSender from "../Utilities/mailer.js";
 
-const contactUs = async (req, res) => {
+const contacts = Object();
+contacts.contactUs = async (req, res) => {
   try {
     //fetch data
     const { firstName, lastName, email, phoneNumber, message } = req.body;
@@ -55,3 +56,5 @@ const contactUs = async (req, res) => {
     );
   }
 };
+
+export default contacts;

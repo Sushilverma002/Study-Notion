@@ -3,6 +3,10 @@ import { config } from "dotenv";
 import MongoDB from "./Config/databaseConfig.js";
 import bodyParser from "body-parser";
 import router from "./Routes/index.js";
+import payment from "./Routes/Payment.js";
+import contact from "./Routes/Contact.js";
+import profile from "./Routes/Profile.js";
+import course from "./Routes/Course.js";
 import cookieParser from "cookie-parser";
 import cloudinaryConnect from "./Config/cloudinaryConfig.js";
 import fileupload from "express-fileupload";
@@ -30,7 +34,11 @@ app.use(
 cloudinaryConnect();
 
 //mounting
-app.use("/api/v1", router);
+app.use("/api/v1/auth", router);
+app.use("/api/v1/profile", profile);
+app.use("/api/v1/course", course);
+app.use("/api/v1/payment", payment);
+app.use("/api/v1/reach", contact);
 
 app.use(cookieParser({}));
 const start = async (req, res) => {

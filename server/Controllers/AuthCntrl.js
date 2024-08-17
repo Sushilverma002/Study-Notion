@@ -57,13 +57,14 @@ AuthController.sendOTP = async (req, res) => {
       const otpBody = await OTPModel.create(OTPayload);
       console.log("otp body:", otpBody);
 
-      const results = {
-        message: "OTP sent successfully",
-        otp: otpNumber,
-      };
-      apiResponseHandler.sendResponse(200, true, results, function (response) {
-        res.json(response);
-      });
+      apiResponseHandler.sendResponseMsg(
+        200,
+        true,
+        "Otp sent successfully",
+        function (response) {
+          res.json(response);
+        }
+      );
     }
   } catch (error) {
     console.log("error while genrating the otp", error);
@@ -185,6 +186,7 @@ AuthController.signUp = async (req, res) => {
       image: `https://api.dicebear.com/8.x/initials/svg?seed=${firstName}${lastName}`,
     });
     console.log("User data", userData);
+    userData.password = undefined;
     return apiResponseHandler.sendResponse(
       200,
       true,
@@ -256,13 +258,7 @@ AuthController.login = async (req, res) => {
         httpOnly: true,
       };
 
-      const result = {
-        message: "user Login successfully.",
-        token: token,
-        user: user,
-      };
-
-      apiResponseHandler.sendResponse(200, true, result, function (response) {
+      apiResponseHandler.sendResponse(200, true, user, function (response) {
         res.cookie("token", token, options);
         res.json(response);
       });

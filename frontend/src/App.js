@@ -6,6 +6,8 @@ import ForgetPassword from "./pages/ForgetPassword.jsx";
 import OpenRoute from "./components/core/auth/OpenRoute.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
+import VerfiyEmail from "./pages/VerfiyEmail.jsx";
+import MyProfile from "./components/core/Dashboard/MyProfile.jsx";
 function App() {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -36,6 +38,15 @@ function App() {
             </OpenRoute>
           }
         ></Route>
+        <Route
+          path="verify-email"
+          element={
+            <OpenRoute>
+              <VerfiyEmail />
+            </OpenRoute>
+          }
+        />
+        <Route path="/dashboard/my-profile" element={<MyProfile />} />
       </Routes>
     </div>
   );

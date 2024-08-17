@@ -25,10 +25,10 @@ export function sendotp(email, navigate) {
       });
 
       console.log("SENDOTP API RESPONSE...............", response);
-      console.log(response.data.success);
+      console.log(response.status);
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+      if (!response.status) {
+        throw new Error(response.status);
       }
       toast.success("OTP Sent Successfully");
       navigate("/verify-email");
@@ -67,10 +67,10 @@ export function signup(
 
       console.log("SIGNUP API RESPONSE........", response);
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+      if (!response.status) {
+        throw new Error(response.status);
       }
-      toast.success("Signup Successful");
+      toast.success("Signup Successfully");
       navigate("/login");
     } catch (error) {
       console.log("SIGNUP API Error............", error);
@@ -95,14 +95,17 @@ export function login(email, password, navigate) {
       console.log("LOGIN API RESPONSE.................", response);
 
       toast.success("Login Successful");
-      dispatch(setToken(response.data.token));
-      const userImage = response.data?.user?.image
-        ? response.data.user.image
-        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName}${response.data.lastName}`;
-      dispatch(setUser({ ...response.data.user, image: userImage }));
+      dispatch(setToken(response.data.results.token));
+      const userImage = response.data?.results?.image
+        ? response.data.results.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.results.firstName}${response.data.results.lastName}`;
+      dispatch(setUser({ ...response.data.results, image: userImage }));
 
-      localStorage.setItem("token", JSON.stringify(response.data.token));
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem(
+        "token",
+        JSON.stringify(response.data.results.token)
+      );
+      localStorage.setItem("user", JSON.stringify(response.data.results));
       navigate("/dashboard/my-profile");
     } catch (error) {
       console.log("LOGIN API ERROR............", error);
