@@ -169,6 +169,10 @@ AuthController.signUp = async (req, res) => {
     //step 4 : not then hash the password and
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // Create the user
+    let approved = "";
+    approved === "Instructor" ? (approved = false) : (approved = true);
+
     const profileData = await ProfileModel.create({
       gender: null,
       dateOfbirth: null,
@@ -182,6 +186,7 @@ AuthController.signUp = async (req, res) => {
       email,
       password: hashedPassword,
       accountType: accountType,
+      approved: approved,
       additionalDeatils: profileData._id,
       image: `https://api.dicebear.com/8.x/initials/svg?seed=${firstName}${lastName}`,
     });
@@ -248,11 +253,14 @@ AuthController.login = async (req, res) => {
       };
       //step 4 : jwt token creation
       const token = jwt.sign(payload, process.env.SECRET_KEY, {
-        expiresIn: "2h",
+        expiresIn: "24h",
       });
+
+      // Save token to user document in database
       user.token = token;
       user.password = undefined;
 
+      // Set cookie for token and return success response
       const options = {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
@@ -337,9 +345,9 @@ AuthController.changePassword = async (req, res) => {
         // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
         console.error("Error occurred while sending email:", error);
         apiResponseHandler.sendError(
-          500,
+          400,
           false,
-          "Internal server error, Error occurred while sending email",
+          " Error occurred while sending email",
           function (response) {
             res.json(response);
           }

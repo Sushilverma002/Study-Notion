@@ -3,6 +3,7 @@ import mailSender from "../Utilities/mailer.js";
 import apiResponseHandler from "../Utilities/apiResponseHandler.js";
 import bcrypt from "bcrypt";
 import { config } from "dotenv";
+import configJson from "../Utilities/config.json " assert { type: "json" };
 config();
 
 const resetPassCntrl = Object();
@@ -27,18 +28,18 @@ resetPassCntrl.resetPassToken = async (req, res) => {
     }
 
     //step 3 : token genratation
-    const token = crypto.randomUUID();
+    const token = crypto.randomUUID(20).toString("hex");
 
     //step 4 : update user by adding expiration time and token
     const updatedDeatils = await UsersModel.findOneAndUpdate(
       { email: email },
-      { token: token, resetPasswordExpire: Date.now() + 5 * 60 * 1000 },
+      { token: token, resetPasswordExpire: Date.now() + 3600000 },
       { new: true }
     );
 
     console.log("updated-details", updatedDeatils);
     //step 5 : create url
-    const url = `https://localhost:3000/update-password/${token}`;
+    const url = configJson.passwordReset + `${token}`;
     //step 6 : send mail contating url
     await mailSender(
       email,
@@ -56,10 +57,10 @@ resetPassCntrl.resetPassToken = async (req, res) => {
     );
   } catch (error) {
     console.log("error", error);
-    apiResponseHandler.sendResponse(
+    apiResponseHandler.sendError(
       500,
       false,
-      "Something went wrong, while reseting the password.",
+      "Something went wrong, while generating the token.",
       function (response) {
         res.json(response);
       }
@@ -100,9 +101,9 @@ resetPassCntrl.resetPassword = async (req, res) => {
       );
     }
     //*token time check
-    if (userDeatil.resetPasswordExpire < Date.now()) {
+    if (!(userDeatil.resetPasswordExpire > Date.now())) {
       apiResponseHandler.sendResponse(
-        401,
+        403,
         false,
         "Entered token is expired, please regenrate your token.",
         function (response) {
@@ -127,6 +128,16 @@ resetPassCntrl.resetPassword = async (req, res) => {
         res.json(response);
       }
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log("error", error);
+    apiResponseHandler.sendError(
+      500,
+      false,
+      "Something went wrong, while reseting the password.",
+      function (response) {
+        res.json(response);
+      }
+    );
+  }
 };
 export default resetPassCntrl;

@@ -29,9 +29,11 @@ const UserSchema = new mongoose.Schema(
     },
     active: {
       type: Boolean,
+      default: true,
     },
-    approve: {
+    approved: {
       type: Boolean,
+      default: true,
     },
     courses: [
       {
