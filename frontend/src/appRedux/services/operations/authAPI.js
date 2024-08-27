@@ -28,7 +28,7 @@ export function sendotp(email, navigate) {
       console.log(response.status);
 
       if (!response.status) {
-        throw new Error(response.status);
+        throw new Error(response.message);
       }
       toast.success("OTP Sent Successfully");
       navigate("/verify-email");
@@ -68,7 +68,7 @@ export function signup(
       console.log("SIGNUP API RESPONSE........", response);
 
       if (!response.status) {
-        throw new Error(response.status);
+        throw new Error(response.message);
       }
       toast.success("Signup Successfully");
       navigate("/login");
@@ -138,15 +138,15 @@ export function getPasswordResetToken(email, setEmailSent) {
 
       console.log("RESET PASSWORD TOKEN RESPONSE....", response);
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+      if (!response.status) {
+        throw new Error(response.message);
       }
 
       toast.success("Reset Email Sent");
       setEmailSent(true);
     } catch (error) {
-      console.log("TOKEN PASSWORD TOEK ERROR", error);
-      toast.error("Faild to send email for resetting password");
+      console.log("TOKEN PASSWORD TOKEN ERROR", error);
+      toast.error("failed to send email for resetting password");
     }
     dispatch(setLoading(false));
   };
@@ -164,11 +164,11 @@ export function resetPassword(password, confirmPassword, token) {
 
       console.log("Reset Password Response...", response);
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+      if (!response.status) {
+        throw new Error(response.message);
       }
 
-      toast.success("RESET PASSWORD RESPONSE....", response);
+      toast.success("Password has been reset successfully");
     } catch (error) {
       console.log("RESET PASSWORD ERROR", error);
       toast.error("unable to reset password");
@@ -176,3 +176,5 @@ export function resetPassword(password, confirmPassword, token) {
     dispatch(setLoading(false));
   };
 }
+
+// so why async beacuse u are making network call hence await is required(becoze it may take time) hence we made aync
