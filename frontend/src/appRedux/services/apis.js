@@ -1,3 +1,5 @@
+// import { config } from "dotenv";
+// config();
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 // Auth EndPoints

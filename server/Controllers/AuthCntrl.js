@@ -57,13 +57,14 @@ AuthController.sendOTP = async (req, res) => {
       const otpBody = await OTPModel.create(OTPayload);
       console.log("otp body:", otpBody);
 
-      const results = {
-        message: "OTP sent successfully",
-        otp: otpNumber,
-      };
-      apiResponseHandler.sendResponse(200, true, results, function (response) {
-        res.json(response);
-      });
+      apiResponseHandler.sendResponseMsg(
+        200,
+        true,
+        "Otp sent successfully",
+        function (response) {
+          res.json(response);
+        }
+      );
     }
   } catch (error) {
     console.log("error while genrating the otp", error);
@@ -168,6 +169,10 @@ AuthController.signUp = async (req, res) => {
     //step 4 : not then hash the password and
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // Create the user
+    let approved = "";
+    approved === "Instructor" ? (approved = false) : (approved = true);
+
     const profileData = await ProfileModel.create({
       gender: null,
       dateOfbirth: null,
@@ -181,10 +186,12 @@ AuthController.signUp = async (req, res) => {
       email,
       password: hashedPassword,
       accountType: accountType,
+      approved: approved,
       additionalDeatils: profileData._id,
       image: `https://api.dicebear.com/8.x/initials/svg?seed=${firstName}${lastName}`,
     });
     console.log("User data", userData);
+    userData.password = undefined;
     return apiResponseHandler.sendResponse(
       200,
       true,
@@ -246,23 +253,20 @@ AuthController.login = async (req, res) => {
       };
       //step 4 : jwt token creation
       const token = jwt.sign(payload, process.env.SECRET_KEY, {
-        expiresIn: "2h",
+        expiresIn: "24h",
       });
+
+      // Save token to user document in database
       user.token = token;
       user.password = undefined;
 
+      // Set cookie for token and return success response
       const options = {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
       };
 
-      const result = {
-        message: "user Login successfully.",
-        token: token,
-        user: user,
-      };
-
-      apiResponseHandler.sendResponse(200, true, result, function (response) {
+      apiResponseHandler.sendResponse(200, true, user, function (response) {
         res.cookie("token", token, options);
         res.json(response);
       });
@@ -341,9 +345,9 @@ AuthController.changePassword = async (req, res) => {
         // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
         console.error("Error occurred while sending email:", error);
         apiResponseHandler.sendError(
-          500,
+          400,
           false,
-          "Internal server error, Error occurred while sending email",
+          " Error occurred while sending email",
           function (response) {
             res.json(response);
           }
