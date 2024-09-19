@@ -18,7 +18,7 @@ const UpdatePassword = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false); // this is work as flag, hence a password can work as text and behave like a password so no this flag basis i will tell what to take
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   const { password, confirmPassword } = formdata; // here we are picking the password and confirm password from the formData.
 
@@ -80,7 +80,7 @@ const UpdatePassword = () => {
               </p>
               <input
                 required
-                type={showConfirmPassword ? "text" : "password"}
+                type={showNewPassword ? "text" : "password"}
                 name="confirmpassword"
                 value={confirmPassword}
                 onChange={handleOnChange}
@@ -88,10 +88,10 @@ const UpdatePassword = () => {
                 className="form-style w-full !pr-10"
               />
               <span
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                onClick={() => setShowNewPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
               >
-                {showConfirmPassword ? (
+                {setShowNewPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
                 ) : (
                   <AiOutlineEye fontSize={24} fill="#AFB2BF" />

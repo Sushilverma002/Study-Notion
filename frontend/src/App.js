@@ -6,8 +6,10 @@ import VerfiyEmail from "./pages/VerfiyEmail.jsx";
 import UpdatePassword from "./pages/UpdatePassword.jsx";
 import Navbar from "./components/common/Navbar.jsx";
 import OpenRoute from "./components/core/auth/OpenRoute.jsx";
-// import MyProfile from "./components/core/Dashboard/MyProfile.jsx";
+import MyProfile from "./components/core/Dashboard/MyProfile.jsx";
+import Settings from "./components/core/Dashboard/Settings";
 import ForgetPassword from "./pages/ForgetPassword.jsx";
+import PrivateRoute from "./components/core/auth/PrivateRoute.jsx";
 import Home from "./pages/Home.jsx";
 //OpenRoute-> it is route use for authenication wheather user logged in or not . so only none logged in user only access the specific route.
 
@@ -59,7 +61,28 @@ function App() {
             </OpenRoute>
           }
         />
-        {/* <Route path="/dashboard/my-profile" element={<MyProfile />} /> */}
+        <Route path="dashboard/my-profile" element={<MyProfile />} />
+        <Route path="dashboard/Settings" element={<Settings />} />
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        >
+          <Route path="dashboard/my-profile" element={<MyProfile />} />
+          <Route path="dashboard/Settings" element={<Settings />} />
+
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route path="dashboard/cart" element={<Cart />} />
+              <Route
+                path="dashboard/enrolled-courses"
+                element={<EnrolledCourses />}
+              />
+            </>
+          )}
+        </Route>
       </Routes>
     </div>
   );
