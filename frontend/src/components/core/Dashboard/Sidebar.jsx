@@ -4,9 +4,9 @@ import { VscSignOut } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 
 import ConfirmationModal from "../../common/ConfirmationModal.jsx";
-import sidebarLinks from "../../../data/dashboard-links.js";
+import { sidebarLinks } from "../../../data/dashboard-links.js";
 import { logout } from "../../../appRedux/services/operations/authAPI";
-import SidebarLink from "./SidebarLinks";
+import SidebarLink from "./SidebarLink.jsx";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

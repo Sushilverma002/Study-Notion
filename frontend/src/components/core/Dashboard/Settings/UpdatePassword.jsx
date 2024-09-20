@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { changePassword } from "../../../../appRedux/services/operations/settingsAPI";
@@ -47,7 +47,7 @@ const UpdatePassword = () => {
                 {...register("oldPassword", { required: true })}
               />
               <span
-                onClick={() => showOldpassword((prev) => !prev)}
+                onClick={() => setShowOldPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
               >
                 {showOldpassword ? (
@@ -67,7 +67,7 @@ const UpdatePassword = () => {
                 New Password
               </label>
               <input
-                type={showOldpassword ? "text" : "password"}
+                type={showNewpassword ? "text" : "password"}
                 name="newPassword"
                 id="newPassword"
                 placeholder="Enter New Password"
@@ -75,7 +75,7 @@ const UpdatePassword = () => {
                 {...register("newPassword", { required: true })}
               />
               <span
-                onClick={() => showOldpassword((prev) => !prev)}
+                onClick={() => setShowNewPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
               >
                 {showOldpassword ? (
