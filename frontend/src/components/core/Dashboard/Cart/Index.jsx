@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import RenderCartCourses from "./RenderCartCourse.jsx";
+import RenderCartCourse from "./RenderCartCourse.jsx";
 import RenderTotalAmount from "./RenderTotalAmount.jsx";
 
 export default function Cart() {
@@ -13,7 +13,7 @@ export default function Cart() {
 
       {total > 0 ? (
         <div>
-          <RenderCartCourses />
+          <RenderCartCourse />
           <RenderTotalAmount />
         </div>
       ) : (

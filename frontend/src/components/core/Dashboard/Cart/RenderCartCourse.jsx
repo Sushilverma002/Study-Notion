@@ -48,4 +48,4 @@ const RenderCartCourse = () => {
   );
 };
 
-export default RenderCartCourses;
+export default RenderCartCourse;

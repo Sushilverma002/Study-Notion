@@ -13,7 +13,7 @@ import ForgetPassword from "./pages/ForgetPassword.jsx";
 import PrivateRoute from "./components/core/auth/PrivateRoute.jsx";
 import Home from "./pages/Home.jsx";
 import { Account_Type } from "./utils/constant.js";
-// import Cart from "./components/core/Dashboard/Cart";
+import Cart from "./components/core/Dashboard/Cart";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses.jsx";
 import { useSelector } from "react-redux";
 //OpenRoute-> it is route use for authenication wheather user logged in or not . so only none logged in user only access the specific route.
@@ -82,7 +82,7 @@ function App() {
 
           {user?.accountType === Account_Type.STUDENT && (
             <>
-              {/* <Route path="dashboard/cart" element={<Cart />} /> */}
+              <Route path="dashboard/cart" element={<Cart />} />
               <Route
                 path="dashboard/enrolled-courses"
                 element={<EnrolledCourses />}
