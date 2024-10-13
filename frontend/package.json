@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ramonak/react-progress-bar": "^5.3.0",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "concurrently": "^8.2.2",
@@ -33,7 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "server": "cd c:/Users/sushil verma/github/StudyNotion/server && npm run dev",
+    "server": "cd c:/Users/sushil verma/github/Study-Notion/server && npm run dev",
     "dev": "concurrently -n \"client,server\" -c \"bgBlue,bgYellow\" \"npm start\" \"npm run server\""
   },
   "eslintConfig": {
