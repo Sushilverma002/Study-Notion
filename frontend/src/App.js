@@ -16,6 +16,8 @@ import { Account_Type } from "./utils/constant.js";
 import Cart from "./components/core/Dashboard/Cart";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses.jsx";
 import { useSelector } from "react-redux";
+import Contact from "./pages/Contact.jsx";
+import About from "./pages/About.jsx";
 //OpenRoute-> it is route use for authenication wheather user logged in or not . so only none logged in user only access the specific route.
 
 function App() {
@@ -68,6 +70,16 @@ function App() {
             </OpenRoute>
           }
         />
+        <Route
+          path="about"
+          element={
+            <OpenRoute>
+              <About />
+            </OpenRoute>
+          }
+        />
+        <Route path="/contact" element={<Contact />} />
+
         <Route path="dashboard/my-profile" element={<MyProfile />} />
         <Route path="dashboard/Settings" element={<Settings />} />
         <Route
