@@ -75,7 +75,7 @@ const Home = () => {
               active: false,
             }}
             codeblock={`<!DOCTYPE html>\n<html>\n<head><title>Example\n</title><linkrel="stylesheet"href="styles.css">\n</head>\n<body>\n<h1><ahref="/">Header</a>\n</h1>\n<nav><ahref="one/">One</a><ahref="two/">Two\n</a><ahref="three/">Three</a>\n</nav>`}
-            codeColor={"text-yellow-25"}
+            codeColor={"text-white"}
           />
         </div>
 
@@ -104,7 +104,7 @@ const Home = () => {
               active: false,
             }}
             codeblock={`<!DOCTYPE html>\n<html>\n<head><title>Example\n</title><linkrel="stylesheet"href="styles.css">\n</head>\n<body>\n<h1><ahref="/">Header</a>\n</h1>\n<nav><ahref="one/">One</a><ahref="two/">Two\n</a><ahref="three/">Three</a>\n</nav>`}
-            codeColor={"text-yellow-25"}
+            codeColor={"text-white"}
           />
         </div>
 

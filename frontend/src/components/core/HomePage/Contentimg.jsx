@@ -14,7 +14,7 @@ const Contentimg = ({
   codeColor,
 }) => {
   return (
-    <div className={`flex ${position} my-20 justify-between gap-10`}>
+    <div className={`flex ${position} my-20 justify-between gap-10 `}>
       {/* section 1*/}
 
       <div className="w-[50%] flex flex-col gap-3">
@@ -34,10 +34,10 @@ const Contentimg = ({
       </div>
 
       {/* section 2 */}
-      <div className="flex flex-row h-fit text-[10px] w-[%100] py-4 lg:w-[500px]">
+      <div className="flex flex-row h-fit text-[10px] w-[%100] py-4 lg:w-[500px] shadow-[0_0_30px_5px] shadow-[#1FA2FF] ">
         {/* bg gradient */}
 
-        <div className="text-center flex flex-col w-[10%] font-bold text-richblack-400 font-inter">
+        <div className="text-center flex flex-col w-[10%] font-bold text-richblack-400 font-inter text-[14px]  ">
           <p>1</p>
           <p>2</p>
           <p>3</p>
@@ -52,7 +52,7 @@ const Contentimg = ({
         </div>
 
         <div
-          className={`w-[90%] flex flex-col gap-2  font-bold font-mono pr-2  ${codeColor}`}
+          className={`w-[90%] flex flex-col gap-2 font-bold font-mono pr-2 text-[14px]  ${codeColor}`}
         >
           <TypeAnimation
             sequence={[codeblock, 2000, ""]}

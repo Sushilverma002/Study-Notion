@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { removeFromCart } from "../../../../appRedux/slices/cart";
 import ReactStars from "react-rating-stars-component";
 
-const RenderCartCourses = () => {
+const RenderCartCourse = () => {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -48,4 +48,4 @@ const RenderCartCourses = () => {
   );
 };
 
-export default RenderCartCourses;
+export default RenderCartCourse;

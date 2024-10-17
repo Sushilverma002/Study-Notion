@@ -104,8 +104,10 @@ AuthController.signUp = async (req, res) => {
       !otp ||
       !accountType
     ) {
-      return (
-        apiResponseHandler.sendResponse(403, false, "All fields are required."),
+      return apiResponseHandler.sendError(
+        403,
+        false,
+        "All fields are required",
         function (response) {
           res.json(response);
         }
